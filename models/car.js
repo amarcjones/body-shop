@@ -1,5 +1,6 @@
 // bring in dependencies
 const mongoose = require("mongoose");
+var db = require('./')
 // create a schema
 
 const carSchema = new mongoose.Schema({
@@ -11,6 +12,16 @@ const carSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId
   }
 });
+
+carSchema.pre('remove', function(next) {
+  var self = this
+  db.Driver.findById(this.driver).then(function(driver){
+	driver.cars.remove(self.id)
+	driver.save().then(function(e){
+	  next()
+	})
+  })
+})
 
 // create a model
 const Car = mongoose.model("Car", carSchema);

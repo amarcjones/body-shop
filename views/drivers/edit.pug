@@ -9,3 +9,6 @@ block content
       input(type="number", name="age", value=driver.age)
     p
       button Edit a new driver
+
+  form(action=`/drivers/${driver.id}?_method=DELETE`, method="POST")
+    input(type="submit", value="X")
